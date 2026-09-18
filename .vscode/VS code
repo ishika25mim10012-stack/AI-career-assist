@@ -1,0 +1,778 @@
+‎
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,4 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:system"
+}
+python -m venv .venv
+‎ML_EVALUATION.md‎
++126
+Lines changed: 126 additions & 0 deletions
+
+
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,126 @@
+# ML Model Evaluation
+## 1. Purpose
+The Career Classification module uses Logistic Regression to predict suitable career categories from resume text.
+The model is evaluated using four classification metrics:
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+A confusion matrix is also generated to analyze the classification results.
+---
+## 2. Model Used
+The project uses Logistic Regression for career classification.
+The model is trained using TF-IDF features extracted from resume text.
+### Pipeline
+Resume Text
+↓
+Text Preprocessing
+↓
+TF-IDF Feature Extraction
+↓
+Logistic Regression
+↓
+Career Prediction
+---
+## 3. Evaluation Metrics
+### Accuracy
+Accuracy measures the proportion of correctly classified resumes among all evaluated resumes.
+Formula:
+Accuracy = Correct Predictions / Total Predictions
+A higher accuracy means more samples were classified correctly.
+---
+### Precision
+Precision measures how many samples predicted as a particular career category actually belong to that category.
+It is useful when false positive predictions need to be considered.
+---
+### Recall
+Recall measures how many samples belonging to a particular career category were correctly identified by the model.
+It is useful when missing relevant career categories is important.
+---
+### F1 Score
+F1 Score combines Precision and Recall into a single metric.
+Formula:
+F1 Score = 2 × (Precision × Recall) / (Precision + Recall)
+A higher F1 Score indicates a better balance between precision and recall.
+---
+## 4. Confusion Matrix
+The confusion matrix shows the relationship between actual career categories and predicted career categories.
+- Rows represent actual classes.
+- Columns represent predicted classes.
+- Diagonal values represent correct predictions.
+- Off-diagonal values represent misclassifications.
+---
+## 5. Implementation
+The project uses the `evaluate_model()` function from:
+`src/evaluation.py`
+The function calculates:
+- Accuracy
+- Weighted Precision
+- Weighted Recall
+- Weighted F1 Score
+- Confusion Matrix
+---
+## 6. Current Evaluation Method
+The current Streamlit application evaluates the trained career classification model using the same feature matrix used during training.
+Therefore, the displayed metrics represent performance on the training data.
+These values should not be interpreted as final unseen-data or real-world accuracy.
+---
+## 7. Future Improvement
+For a more reliable evaluation, the project can be extended using:
+- Train-test split
+- Cross-validation
+- Separate validation data
+- Testing on unseen resumes
+- Additional classification metrics
+- Hyperparameter tuning
+‎README.md‎
++365
+Lines changed: 365 additions & 0 deletions
+
+
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,365 @@
+# AI-CareerAssist
+## AI-Based Resume Analysis, Job Matching and Career Recommendation System
+AI-CareerAssist is an AI/ML-based career assistance system that analyzes a user's resume and provides personalized career-related insights.
+The system uses Natural Language Processing (NLP), TF-IDF feature extraction, cosine similarity, and Logistic Regression to analyze resume information and generate job, skill, career, and learning recommendations.
+---
+## 📌 Problem Statement
+Students and job seekers often face difficulty in understanding:
+- Which jobs are suitable for their current skills
+- Which skills are missing from their resume
+- Which career categories match their profile
+- What skills they should learn next
+AI-CareerAssist addresses these problems by analyzing resume content and providing automated career-related recommendations through an interactive Streamlit application.
+---
+## 🎯 Objectives
+The main objectives of AI-CareerAssist are:
+1. To extract useful information from a resume.
+2. To preprocess and clean resume text.
+3. To convert resume text into numerical features using TF-IDF.
+4. To identify the most suitable job based on resume-job similarity.
+5. To identify matched and missing skills.
+6. To predict suitable career categories using Machine Learning.
+7. To recommend learning resources for missing skills.
+8. To evaluate the career classification model.
+9. To provide all results through an easy-to-use web interface.
+---
+## 🚀 Features
+### 1. Resume Upload
+Users can upload their resume in:
+- PDF format
+- TXT format
+The system extracts readable text from the uploaded resume.
+### 2. Resume Text Preprocessing
+The extracted resume text is cleaned before analysis.
+The preprocessing stage prepares the text for feature extraction and machine learning.
+### 3. TF-IDF Feature Extraction
+TF-IDF (Term Frequency-Inverse Document Frequency) is used to convert text into numerical feature vectors.
+These vectors are used for comparing resume content with job information.
+### 4. Job Matching
+The system compares the uploaded resume with available job descriptions using cosine similarity.
+The system displays:
+- Best matching job
+- Match score
+- Experience level
+- Required skills
+### 5. Skill Gap Analysis
+The system identifies:
+- Skills already present in the resume
+- Skills required for the matched job
+- Missing skills
+This helps users understand which skills they need to develop.
+### 6. Career Classification
+A Logistic Regression model is used to classify the resume into suitable career categories.
+The system displays the top career predictions with their confidence values.
+### 7. Learning Recommendations
+Learning recommendations are generated based on the missing skills.
+Examples include:
+- Python
+- Machine Learning
+- SQL
+- Data Analysis
+- Deep Learning
+- Git
+- GitHub
+- Cloud Computing
+- Docker
+### 8. Model Evaluation
+The career classification model is evaluated using:
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion Matrix
+---
+## 🧠 Technologies Used
+| Technology | Purpose |
+|---|---|
+| Python | Main programming language |
+| Streamlit | Web application interface |
+| Pandas | Data processing |
+| Scikit-learn | Machine Learning and NLP |
+| TF-IDF | Text feature extraction |
+| Cosine Similarity | Resume-job matching |
+| Logistic Regression | Career classification |
+| PyPDF | PDF text extraction |
+| NumPy | Numerical operations |
+| Matplotlib / Seaborn | Data visualization where applicable |
+---
+## 📂 Project Structure
+```text
+AI-CareerAssist/
+│
+├── app/
+│   ├── app.py
+│   └── app copy.py
+│
+├── data/
+│   ├── Resume.csv
+│   ├── job_dataset.csv
+│   └── final_career_analysis.csv
+│
+├── notebooks/
+│   └── 01_data_analysis.ipynb
+│
+├── src/
+│   ├── data_processing.py
+│   ├── text_preprocessing.py
+│   ├── feature_extraction.py
+│   ├── job_matcher.py
+│   ├── skill_gap.py
+│   ├── classifier.py
+│   ├── recommender.py
+│   └── evaluation.py
+│
+├── tests/
+│   ├── test_skill_gap.py
+│   ├── test_job_matcher.py
+│   ├── test_classifier.py
+│   ├── test_evaluation.py
+│   └── test_recommender.py
+│
+├── docs/
+│   ├── architecture_diagram.png
+│   ├── process_flow_diagram.png
+│   └── uml_diagram.png
+│
+├── ML_EVALUATION.md
+└── README.md
+🔄 System Workflow
+Resume Upload
+      ↓
+Resume Text Extraction
+      ↓
+Text Preprocessing
+      ↓
+TF-IDF Feature Extraction
+      ↓
+Job Matching
+      ↓
+Skill Detection
+      ↓
+Skill Gap Analysis
+      ↓
+Career Classification
+      ↓
+Learning Recommendations
+      ↓
+Model Evaluation
+      ↓
+Display Results
+📊 Machine Learning Approach
+Job Matching
+Resume and job information are converted into TF-IDF vectors.
+Cosine similarity is then used to measure the similarity between the resume and available jobs.
+A higher similarity score indicates greater textual similarity between the resume and the job information.
+Career Classification
+The career classification module uses:
+TF-IDF Features
+       ↓
+Logistic Regression
+       ↓
+Career Category Prediction
+The system generates the top career categories using the predicted class probabilities.
+📈 Model Evaluation
+The project calculates:
+Accuracy
+Measures the proportion of correctly classified samples.
+Precision
+Measures how many predicted samples of a class are actually members of that class.
+Recall
+Measures how many samples belonging to a class are correctly identified.
+F1 Score
+Combines precision and recall into a single metric.
+Confusion Matrix
+Shows the relationship between actual and predicted career categories.
+Note: The current application evaluates the trained career classification model using the same feature matrix used during training. Therefore, the displayed evaluation metrics represent training-data performance and should not be interpreted as final unseen-data performance.
+A future version can use a train-test split or cross-validation for more reliable evaluation.
+🧪 Testing
+The project contains unit tests for important modules.
+Tested modules include:
+Skill gap analysis
+Job matching
+Career classification
+Model evaluation
+Learning recommendations
+The test suite currently contains 7 tests.
+Run all tests using:
+python -m pytest tests/
+Expected successful result:
+7 passed
+🖥️ Running the Application
+Step 1: Clone or download the project
+Place the project on your local computer.
+Step 2: Open the project in VS Code
+Open the AI-CareerAssist folder.
+Step 3: Activate the virtual environment
+On Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+Step 4: Install required libraries
+pip install streamlit pandas scikit-learn pypdf numpy matplotlib seaborn pytest
+Step 5: Run the Streamlit application
+streamlit run app/app.py
+The application will open in your web browser.
+📥 Input
+The primary user input is:
+Resume in PDF or TXT format
+The system also uses job and resume datasets stored in the data folder.
+📤 Output
+After analysis, the application provides:
+Resume analysis
+Detected skills
+Best job match
+Job match score
+Required skills
+Matched skills
+Missing skills
+Career recommendations
+Learning recommendations
+Model evaluation metrics
+Confusion matrix
+🔮 Future Scope
+The system can be improved by:
+Using larger and more diverse datasets.
+Using train-test split and cross-validation.
+Adding more career categories.
+Improving skill extraction using advanced NLP techniques.
+Adding semantic embeddings for better resume-job matching.
+Adding personalized learning platforms and course links.
+Supporting more resume formats.
+Adding explainable AI for career predictions.
+Improving recommendation accuracy using advanced ML models.
+Deploying the application as a cloud-based service.
+⚠️ Limitations
+The current system has some limitations:
+Job matching primarily depends on textual similarity.
+Skill detection depends on skills available in the job dataset.
+Career classification depends on the available training data.
+Learning recommendations are based on a predefined learning-resource mapping.
+Current model evaluation uses training data rather than an independent test set.
+👩‍💻 Project
+Project Name: AI-CareerAssist
+Domain: Artificial Intelligence and Machine Learning
+Application Type: Streamlit Web Application
+Main Areas: NLP, Machine Learning, Resume Analysis, Job Matching and Career Recommendation
+### Where to put it
+In VS Code:
+**Right-click `AI-CareerAssist` → New File → `README.md`**
+Then paste the complete content above and press **Ctrl + S**.
+Your project root should look like:
+```text
+AI-CareerAssist
+├── README.md             ← ⭐ NEW
+├── ML_EVALUATION.md
+├── app
+├── data
+├── docs
+├── notebooks
+├── src
+└── tests
+‎app/app copy.py‎
++962
+Lines changed: 962 additions & 0 deletions
+Large diffs are not rendered by default.
+‎app/app.py‎
++680
+Lines changed: 680 additions & 0 deletions
+Large diffs are not rendered by default.
+‎data/Resume.csv‎
++2,857
+Lines changed: 2857 additions & 0 deletions
+Large diffs are not rendered by default.
+‎data/final_career_analysis.csv‎
++2
+Lines changed: 2 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,2 @@
+Job Title,Experience Level,Job Match Score (%),Matched Skills,Missing Skills,Learning Recommendations,Top Career 1,Career 1 Confidence (%),Top Career 2,Career 2 Confidence (%),Top Career 3,Career 3 Confidence (%)
+Marketing Specialist,Fresher,17.4,,".net core fundamentals, .net framework, asp.net, c#, css, entity framework basics, git, html, javascript basics, linq, mvc, sql server, unit testing basics, vb.net basics, visual studio",Learn and practice .net core fundamentals; Learn and practice .net framework; Learn and practice asp.net; Learn and practice c#; Learn CSS and web styling; Learn and practice entity framework basics; Learn Git and version control; Learn HTML and web page structure; Learn and practice javascript basics; Learn and practice linq; Learn and practice mvc; Learn and practice sql server; Learn and practice unit testing basics; Learn and practice vb.net basics; Learn and practice visual studio,HR,25.43,PUBLIC-RELATIONS,9.19,HEALTHCARE,7.2
+‎data/job_dataset.csv‎
++1,069
+Lines changed: 1069 additions & 0 deletions
+Large diffs are not rendered by default.
+‎docs/UMLdiagram.png‎
+1.32 MB
+
+
+
+‎docs/architecture_diagram.png‎
+1.35 MB
+
+
+
+‎docs/process_flow_diagram.png‎
+1.35 MB
+
+
+
+‎notebooks/01_data_analysis.ipynb‎
++4,461
+Lines changed: 4461 additions & 0 deletions
+Large diffs are not rendered by default.
+‎src/__init__.py‎
+Whitespace-only changes.
+‎src/classifier.py‎
++36
+Lines changed: 36 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,36 @@
+from sklearn.linear_model import LogisticRegression
+def train_career_model(X_train, y_train):
+    """
+    Train a Logistic Regression model for career classification.
+    """
+    career_model = LogisticRegression(
+        max_iter=1000,
+        random_state=42
+    )
+    career_model.fit(X_train, y_train)
+    return career_model
+def predict_career(career_model, resume_vector, top_n=3):
+    """
+    Predict the top career categories for a resume.
+    """
+    probabilities = career_model.predict_proba(resume_vector)[0]
+    top_indices = probabilities.argsort()[-top_n:][::-1]
+    predictions = []
+    for index in top_indices:
+        predictions.append({
+            "Career": career_model.classes_[index],
+            "Confidence": round(probabilities[index] * 100, 2)
+        })
+    return predictions
+‎src/data_processing.py‎
++12
+Lines changed: 12 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,12 @@
+from pathlib import Path
+import pandas as pd
+def load_data():
+    project_folder = Path(__file__).resolve().parent.parent
+    data_folder = project_folder / "data"
+    resume_df = pd.read_csv(data_folder / "Resume.csv")
+    job_df = pd.read_csv(data_folder / "job_dataset.csv")
+    return resume_df, job_df
+‎src/evaluation.py‎
++46
+Lines changed: 46 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,46 @@
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix
+)
+def evaluate_model(y_true, y_pred):
+    """
+    Evaluate the career classification model.
+    """
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(
+        y_true,
+        y_pred,
+        average="weighted",
+        zero_division=0
+    )
+    recall = recall_score(
+        y_true,
+        y_pred,
+        average="weighted",
+        zero_division=0
+    )
+    f1 = f1_score(
+        y_true,
+        y_pred,
+        average="weighted",
+        zero_division=0
+    )
+    matrix = confusion_matrix(y_true, y_pred)
+    return {
+        "accuracy": round(accuracy * 100, 2),
+        "precision": round(precision * 100, 2),
+        "recall": round(recall * 100, 2),
+        "f1_score": round(f1 * 100, 2),
+        "confusion_matrix": matrix
+    }
+‎src/feature_extraction.py‎
++21
+Lines changed: 21 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,21 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
+def create_tfidf_features(resume_texts, job_texts):
+    """
+    Convert resume and job description text into
+    TF-IDF numerical features.
+    """
+    tfidf_vectorizer = TfidfVectorizer(
+        max_features=5000,
+        stop_words="english"
+    )
+    # Learn vocabulary from resume text
+    resume_tfidf = tfidf_vectorizer.fit_transform(resume_texts)
+    # Convert job text using the same vocabulary
+    job_tfidf = tfidf_vectorizer.transform(job_texts)
+    return tfidf_vectorizer, resume_tfidf, job_tfidf
+‎src/job_matcher.py‎
++25
+Lines changed: 25 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,25 @@
+from sklearn.metrics.pairwise import cosine_similarity
+def find_best_job(resume_vector, job_tfidf, job_df):
+    """
+    Find the job that is most similar to the resume.
+    """
+    similarity_scores = cosine_similarity(
+        resume_vector,
+        job_tfidf
+    )[0]
+    best_job_index = similarity_scores.argmax()
+    best_score = similarity_scores[best_job_index]
+    best_job = job_df.iloc[best_job_index]
+    return {
+        "Job Title": best_job["Title"],
+        "Experience Level": best_job["ExperienceLevel"],
+        "Years of Experience": best_job["YearsOfExperience"],
+        "Skills": best_job["Skills"],
+        "Match Score": round(best_score * 100, 2)
+    }
+‎src/recommender.py‎
++45
+Lines changed: 45 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,45 @@
+learning_resources = {
+    "python": "Learn Python programming",
+    "machine learning": "Learn Machine Learning fundamentals",
+    "deep learning": "Learn Deep Learning and neural networks",
+    "sql": "Learn SQL and database management",
+    "data analysis": "Learn Data Analysis with Pandas and NumPy",
+    "excel": "Improve Excel and data handling skills",
+    "communication": "Improve communication and presentation skills",
+    "project management": "Learn project management fundamentals",
+    "data visualization": "Learn data visualization using Matplotlib and Seaborn",
+    "statistics": "Learn statistics for data analysis",
+    "html": "Learn HTML and web page structure",
+    "css": "Learn CSS and web styling",
+    "javascript": "Learn JavaScript programming",
+    "java": "Learn Java programming",
+    "c++": "Learn C++ programming",
+    "git": "Learn Git and version control",
+    "github": "Learn GitHub and collaborative development",
+    "cloud": "Learn cloud computing fundamentals",
+    "aws": "Learn AWS cloud services",
+    "docker": "Learn Docker and containerization"
+}
+def generate_learning_recommendations(missing_skills):
+    """
+    Generate learning recommendations based on missing skills.
+    """
+    recommendations = []
+    for skill in missing_skills:
+        skill_lower = skill.lower().strip()
+        if skill_lower in learning_resources:
+            recommendations.append(
+                learning_resources[skill_lower]
+            )
+        else:
+            recommendations.append(
+                f"Learn and practice {skill}"
+            )
+    return recommendations
+‎src/skill_gap.py‎
++50
+Lines changed: 50 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,50 @@
+import pandas as pd
+def convert_skills_to_list(skill_text):
+    """
+    Convert skill text into a list of individual skills.
+    """
+    if pd.isna(skill_text):
+        return []
+    skill_text = str(skill_text).lower()
+    skill_text = skill_text.replace("|", ",")
+    skill_text = skill_text.replace(";", ",")
+    skill_text = skill_text.replace("\n", ",")
+    skills = [skill.strip() for skill in skill_text.split(",")]
+    skills = [skill for skill in skills if skill]
+    return skills
+def analyze_skill_gap(resume_skills, job_skills):
+    """
+    Compare resume skills with job-required skills.
+    """
+    resume_skills = set(
+        skill.lower().strip()
+        for skill in resume_skills
+    )
+    job_skills = set(
+        skill.lower().strip()
+        for skill in job_skills
+    )
+    matched_skills = resume_skills.intersection(job_skills)
+    missing_skills = job_skills.difference(resume_skills)
+    return {
+        "matched_skills": sorted(matched_skills),
+        "missing_skills": sorted(missing_skills),
+        "total_required_skills": len(job_skills),
+        "total_matched_skills": len(matched_skills),
+        "total_missing_skills": len(missing_skills)
+    }
+‎src/text_preprocessing.py‎
++19
+Lines changed: 19 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,19 @@
+import re
+def clean_text(text):
+    """
+    Clean text by converting it to lowercase,
+    removing special characters, and removing extra spaces.
+    """
+    text = str(text)
+    text = text.lower()
+    # Remove special characters
+    text = re.sub(r'[^a-zA-Z0-9\s]', ' ', text)
+    # Remove extra spaces
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+‎tests/test_classifier.py‎
++40
+Lines changed: 40 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,40 @@
+import numpy as np
+from scipy.sparse import csr_matrix
+from src.classifier import train_career_model, predict_career
+def test_career_classification():
+    X_train = csr_matrix([
+        [1, 0, 0],
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+        [0, 0, 1]
+    ])
+    y_train = np.array([
+        "Machine Learning",
+        "Machine Learning",
+        "Web Development",
+        "Web Development",
+        "Data Science",
+        "Data Science"
+    ])
+    model = train_career_model(X_train, y_train)
+    predictions = predict_career(
+        model,
+        X_train[0],
+        top_n=3
+    )
+    assert len(predictions) == 3
+    assert "Career" in predictions[0]
+    assert "Confidence" in predictions[0]
+    assert 0 <= predictions[0]["Confidence"] <= 100
+‎tests/test_evaluation.py‎
++29
+Lines changed: 29 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,29 @@
+import numpy as np
+from src.evaluation import evaluate_model
+def test_evaluate_model():
+    y_true = np.array([
+        "Machine Learning",
+        "Machine Learning",
+        "Data Science",
+        "Data Science"
+    ])
+    y_pred = np.array([
+        "Machine Learning",
+        "Machine Learning",
+        "Data Science",
+        "Data Science"
+    ])
+    result = evaluate_model(y_true, y_pred)
+    assert result["accuracy"] == 100.0
+    assert result["precision"] == 100.0
+    assert result["recall"] == 100.0
+    assert result["f1_score"] == 100.0
+    assert result["confusion_matrix"] is not None
+‎tests/test_job_matcher.py‎
++48
+Lines changed: 48 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,48 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from src.job_matcher import find_best_job
+def test_find_best_job():
+    job_df = pd.DataFrame({
+        "Title": [
+            "Machine Learning Engineer",
+            "Web Developer"
+        ],
+        "ExperienceLevel": [
+            "Entry Level",
+            "Entry Level"
+        ],
+        "YearsOfExperience": [
+            1,
+            1
+        ],
+        "Skills": [
+            "Python, Machine Learning",
+            "HTML, CSS, JavaScript"
+        ]
+    })
+    vectorizer = TfidfVectorizer()
+    job_text = [
+        "Python Machine Learning",
+        "HTML CSS JavaScript"
+    ]
+    job_vectors = vectorizer.fit_transform(job_text)
+    resume_vector = vectorizer.transform(
+        ["Python Machine Learning"]
+    )
+    result = find_best_job(
+        resume_vector,
+        job_vectors,
+        job_df
+    )
+    assert result["Job Title"] == "Machine Learning Engineer"
+    assert result["Experience Level"] == "Entry Level"
+    assert result["Match Score"] > 0
+‎tests/test_recommender.py‎
++32
+Lines changed: 32 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,32 @@
+from src.recommender import generate_learning_recommendations
+def test_learning_recommendations():
+    missing_skills = [
+        "Python",
+        "Machine Learning",
+        "SQL"
+    ]
+    recommendations = generate_learning_recommendations(
+        missing_skills
+    )
+    assert len(recommendations) == 3
+    assert recommendations[0] == "Learn Python programming"
+    assert recommendations[1] == "Learn Machine Learning fundamentals"
+    assert recommendations[2] == "Learn SQL and database management"
+def test_unknown_skill_recommendation():
+    missing_skills = ["TensorFlow"]
+    recommendations = generate_learning_recommendations(
+        missing_skills
+    )
+    assert len(recommendations) == 1
+    assert recommendations[0] == "Learn and practice TensorFlow"
+‎tests/test_skill_gap.py‎
++20
+Lines changed: 20 additions & 0 deletions
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,20 @@
+from src.skill_gap import convert_skills_to_list, analyze_skill_gap
+def test_convert_skills_to_list():
+    skills = convert_skills_to_list("Python, Machine Learning, SQL")
+    assert "python" in skills
+    assert "machine learning" in skills
+    assert "sql" in skills
+def test_skill_gap_analysis():
+    resume_skills = ["Python", "SQL", "Machine Learning"]
+    job_skills = ["Python", "SQL", "Deep Learning"]
+    result = analyze_skill_gap(resume_skills, job_skills)
+    assert "python" in result["matched_skills"]
+    assert "sql" in result["matched_skills"]
+    assert "deep learning" in result["missing_skills"]
+docs/UMLdiagram.png
